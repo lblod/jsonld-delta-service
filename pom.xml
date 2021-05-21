@@ -32,7 +32,7 @@
   <properties>
     <java.version>15</java.version>
     <jena.version>3.17.0</jena.version>
-    <guava.version>30.1.1-jre</guava.version>
+    <guava.version>29.0-jre</guava.version>
     <commons-text.version>1.9</commons-text.version>
     <poi.version>5.0.0</poi.version>
   </properties>
