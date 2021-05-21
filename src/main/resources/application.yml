@@ -1,9 +1,6 @@
 server:
   port: ${SERVER_PORT:80}
 
-application-profile:
-  default: file:${APPLICATION_PROFILE_PATH:test/config/application-profile.ttl}
-
 share-folder:
   path: ${SHARE_FOLDER_DIRECTORY:/share}
 
@@ -17,6 +14,7 @@ spring:
     multipart:
       max-request-size: ${MAX_REQUEST_SIZE:512MB}
       max-file-size: ${MAX_FILE_SIZE:512MB}
+
 logging:
   level:
     root: ${LOGGING_LEVEL:INFO}
