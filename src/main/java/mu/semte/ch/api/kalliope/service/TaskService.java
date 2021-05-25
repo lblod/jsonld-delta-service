@@ -119,8 +119,6 @@ public class TaskService {
       resultSet.forEachRemaining(r -> turtleFiles.add(FileDataObject.builder()
         .graph(r.getResource("graph").getURI())
         .physicalFileName(r.getLiteral("physicalFileName").getString())
-        // .physicalFile(r.getResource("physicalFile").getURI())
-        //  FIXME
         .physicalFile("%s/%s".formatted(shareFolderPath, r.getLiteral("physicalFileName").getString()))
         .physicalId(r.getLiteral("physicalId").getString())
         .creator(r.getResource("creator").getURI())

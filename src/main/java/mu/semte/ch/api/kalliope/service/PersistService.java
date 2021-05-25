@@ -5,13 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.base.Strings;
-
-import org.apache.jena.datatypes.BaseDatatype;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
@@ -19,11 +14,9 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-
 import lombok.extern.slf4j.Slf4j;
 import mu.semte.ch.api.kalliope.Constants;
 import mu.semte.ch.lib.dto.Delta;
-import mu.semte.ch.lib.dto.Node;
 import mu.semte.ch.lib.dto.Triple;
 import mu.semte.ch.lib.utils.ModelUtils;
 
