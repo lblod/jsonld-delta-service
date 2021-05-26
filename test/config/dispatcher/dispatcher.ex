@@ -31,6 +31,10 @@ defmodule Dispatcher do
     forward conn, path, "http://kalliope-api/delta"
   end
 
+  match "/changes/*path", %{ layer: :api_services, accept: %{ json: true } } do
+    forward conn, path, "http://kalliope-api/changes"
+  end
+
   match "/inserts/*path", %{ layer: :api_services, accept: %{ json: true } } do
     forward conn, path, "http://kalliope-api/inserts"
   end
