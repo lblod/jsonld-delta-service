@@ -27,6 +27,10 @@ defmodule Dispatcher do
   ###############
   # API SERVICES
   ###############
+  match "/v3/api-docs/*path", %{ layer: :api_services, accept: %{ json: true } } do
+    forward conn, path, "http://kalliope-api/v3/api-docs"
+  end
+
   match "/delta/*path", %{ layer: :api_services, accept: %{ json: true } } do
     forward conn, path, "http://kalliope-api/delta"
   end
