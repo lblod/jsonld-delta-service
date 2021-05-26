@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.jena.query.Dataset;
+import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
@@ -70,7 +72,42 @@ public class PersistService {
       return getGraph(Constants.DELTA_DELETES_GRAPH_PREFIX, since, snapshot);
     }
 
-    public Model getConsolidated(LocalDateTime since, LocalDateTime snapshot) {
+    public Dataset getAllChanges(LocalDateTime since, LocalDateTime snapshot) {
+      Dataset d = DatasetFactory.create(getResponseMeta(Constants.DELTA_CHANGES_GRAPH_PREFIX));
+      
+      d.addNamedModel(
+        Constants.DELTA_DELETES_GRAPH_PREFIX,
+        getGraph(
+          Constants.DELTA_DELETES_GRAPH_PREFIX,
+          since,
+          snapshot
+        )
+      );
+      
+      d.addNamedModel(
+        Constants.DELTA_INSERTS_GRAPH_PREFIX,
+        getGraph(
+          Constants.DELTA_INSERTS_GRAPH_PREFIX,
+          since,
+          snapshot
+        )
+      );
+
+      return d;
+    }
+
+    public Dataset getConsolidated(LocalDateTime since, LocalDateTime snapshot) {
+      Dataset d = DatasetFactory.create(getResponseMeta(Constants.DELTA_CONSOLIDATED_GRAPH_PREFIX));
+
+      d.addNamedModel(
+        Constants.DELTA_CONSOLIDATED_GRAPH_PREFIX, 
+        getConsolidatedGraph(since, snapshot)
+      );
+
+      return d;
+    }
+
+    public Model getConsolidatedGraph(LocalDateTime since, LocalDateTime snapshot) {
       Model graph = ModelFactory.createDefaultModel();
       taskService.readTurtleFiles(
         Arrays.asList(
@@ -96,5 +133,20 @@ public class PersistService {
       taskService.readTurtleFiles(graphName, since, snapshot)
         .forEach(t -> graph.read(t.getPhysicalFile()));
       return graph;
+    }
+
+    private Model getResponseMeta(String graphName) {
+      Model m = ModelFactory.createDefaultModel();
+
+      m.add(
+        ResourceFactory.createResource(graphName),
+        ResourceFactory.createProperty(Constants.DC_DATE),
+        ResourceFactory.createTypedLiteral(
+          ModelUtils.formattedDate(LocalDateTime.now()),
+          org.apache.jena.datatypes.xsd.XSDDatatype.XSDdateTime
+        )
+      );
+
+      return m;
     }
 }
