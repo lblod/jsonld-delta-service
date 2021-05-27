@@ -48,6 +48,17 @@ public class PersistService {
       );
     }
 
+    @Async
+    public void writeBulk(Model model) {
+      var now = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+
+      taskService.writeTtlFile(
+        Constants.DELTA_INSERTS_GRAPH_PREFIX,
+        model,
+        now+"-inserts.ttl"
+      );
+    }
+
     private Model extractModel(List<Triple> inserts) {
       var model = ModelFactory.createDefaultModel();
 

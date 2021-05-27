@@ -21,14 +21,13 @@ defmodule Acl.UserGroups.Config do
             ]
           } } ] },
       %GroupSpec{
-        name: "harvesting",
+        name: "contacthub",
         useage: [:write, :read_for_write, :read],
         access: %AlwaysAccessible{},
         graphs: [ %GraphSpec{
-          graph: "http://mu.semte.ch/graphs/harvesting",
+          graph: "http://mu.semte.ch/graphs/contacthub",
           constraint: %ResourceConstraint{
             resource_types: [
-              "http://redpencil.data.gift/vocabularies/tasks/Task",
               "http://vocab.deri.ie/cogs#Job",
               "http://open-services.net/ns/core#Error",
               "http://lblod.data.gift/vocabularies/harvesting/HarvestingCollection",
