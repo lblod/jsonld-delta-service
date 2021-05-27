@@ -47,7 +47,7 @@ public class AppController {
   public ResponseEntity<Void> bulk(@RequestBody String dataModel) {
     persistService.writeBulk(ModelUtils.toModel(dataModel, Lang.TURTLE.getName()));
     
-    return ResponseEntity.ok().build();
+    return ResponseEntity.accepted().build();
   }
   
 
