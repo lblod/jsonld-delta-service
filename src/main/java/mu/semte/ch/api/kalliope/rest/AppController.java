@@ -42,7 +42,15 @@ public class AppController {
     
     return ResponseEntity.ok().build();
   }
+
+  @PostMapping("/bulk")
+  public ResponseEntity<Void> bulk(@RequestBody String dataModel) {
+    persistService.writeBulk(ModelUtils.toModel(dataModel, Lang.TURTLE.getName()));
+    
+    return ResponseEntity.accepted().build();
+  }
   
+
   @GetMapping(value = "/changes",
   produces = "application/ld+json")
   public ResponseEntity<String> change(
@@ -58,26 +66,26 @@ public class AppController {
     return ResponseEntity.ok(response); 
   }
 
-  @GetMapping(value = "/inserts",
-  produces = "application/ld+json")
-  public ResponseEntity<String> insert(
-  @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since, 
-  @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime snapshot) {
+  // @GetMapping(value = "/inserts",
+  // produces = "application/ld+json")
+  // public ResponseEntity<String> insert(
+  // @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since, 
+  // @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime snapshot) {
     
-    var model = persistService.getAllInserts(since, snapshot);
-    String response = ModelUtils.toString(model, Lang.JSONLD);
-    return ResponseEntity.ok(response); 
-  }
+  //   var model = persistService.getAllInserts(since, snapshot);
+  //   String response = ModelUtils.toString(model, Lang.JSONLD);
+  //   return ResponseEntity.ok(response); 
+  // }
   
-  @GetMapping(value = "/deletes",
-  produces = "application/ld+json")
-  public ResponseEntity<String> deletes(
-  @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since, 
-  @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime snapshot) {
-    var model = persistService.getAllDeletes(since, snapshot);
-    String response = ModelUtils.toString(model, Lang.JSONLD);
-    return ResponseEntity.ok(response); 
-  }
+  // @GetMapping(value = "/deletes",
+  // produces = "application/ld+json")
+  // public ResponseEntity<String> deletes(
+  // @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since, 
+  // @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime snapshot) {
+  //   var model = persistService.getAllDeletes(since, snapshot);
+  //   String response = ModelUtils.toString(model, Lang.JSONLD);
+  //   return ResponseEntity.ok(response); 
+  // }
   
   @GetMapping(value = "/consolidated",
   produces = "application/ld+json")
@@ -91,4 +99,6 @@ public class AppController {
     String response = writer.toString();
     return ResponseEntity.ok(response); 
   }
+
+
 }
