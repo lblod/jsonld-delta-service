@@ -1,11 +1,9 @@
 package mu.semte.ch.api.kalliope.rest;
 
-import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.jena.riot.Lang;
-import org.apache.jena.riot.RDFDataMgr;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,11 +56,7 @@ public class AppController {
   @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime snapshot) {
     
     var dataset = persistService.getAllChanges(since, snapshot);
-    //TODO Refactor
-    StringWriter writer = new StringWriter();
-    RDFDataMgr.write(writer, dataset, Lang.JSONLD);
-    // String response = ModelUtils.toString(dataset, Lang.JSONLD);
-    String response = writer.toString();
+    String response = ModelUtils.toString(dataset, Lang.JSONLD);
     return ResponseEntity.ok(response); 
   }
 
@@ -93,12 +87,7 @@ public class AppController {
   @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since, 
   @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime snapshot) {
     var dataset = persistService.getConsolidated(since, snapshot);
-    //TODO Refactor
-    StringWriter writer = new StringWriter();
-    RDFDataMgr.write(writer, dataset, Lang.JSONLD);
-    String response = writer.toString();
+    String response = ModelUtils.toString(dataset, Lang.JSONLD);
     return ResponseEntity.ok(response); 
   }
-
-
 }
