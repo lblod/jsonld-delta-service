@@ -8,9 +8,9 @@
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>mu.semte.ch</groupId>
-  <artifactId>kalliope-api</artifactId>
+  <artifactId>jsonld-delta-service</artifactId>
   <version>0.0.4-SNAPSHOT</version>
-  <name>kalliope-api</name>
+  <name>jsonld-delta-service</name>
   <description>Contact Hub Kalliope API</description>
   <licenses>
     <license>
@@ -23,7 +23,7 @@
       <email>code@devloed.com</email>
       <organization>LBLOD</organization>
       <organizationUrl>https://lokaalbestuur.vlaanderen.be/</organizationUrl>
-      <url>https://github.com/bdevloed/app-kalliope-api</url>
+      <url>https://github.com/bdevloed/jsonld-delta-service</url>
       <roles>
         <role>Developer</role>
       </roles>
@@ -38,7 +38,7 @@
   </properties>
   <scm>
     <connection>
-      scm:git:git@github.com:bdevloed/app-kalliope-api.git
+      scm:git:git@github.com:bdevloed/jsonld-delta-service.git
     </connection>
     <tag>HEAD</tag>
   </scm>
@@ -189,7 +189,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <finalName>kalliope-api</finalName>
+          <finalName>jsonld-delta-service</finalName>
           <addResources>true</addResources>
           <excludes>
             <exclude>
