@@ -64,7 +64,7 @@
     <dependency>
         <groupId>mu.semte.ch</groupId>
         <artifactId>mu-java</artifactId>
-        <version>1.0.8</version>
+        <version>1.0.9</version>
     </dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
