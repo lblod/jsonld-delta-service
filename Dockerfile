@@ -19,6 +19,6 @@ FROM amazoncorretto:15
 
 WORKDIR /app
 
-COPY --from=builder /app/target/kalliope-api.jar ./app.jar
+COPY --from=builder /app/target/jsonld-delta-service.jar ./app.jar
 
 ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/app.jar"]
