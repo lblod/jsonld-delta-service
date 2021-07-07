@@ -12,6 +12,7 @@ sparql:
 spring:
   servlet:
     multipart:
+      enabled: true
       max-request-size: ${MAX_REQUEST_SIZE:512MB}
       max-file-size: ${MAX_FILE_SIZE:512MB}
 
