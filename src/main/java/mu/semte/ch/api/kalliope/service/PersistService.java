@@ -37,14 +37,15 @@ public class PersistService {
       var now = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
       
       taskService.writeTtlFile(
-        Constants.DELTA_INSERTS_GRAPH_PREFIX,
-        extractModel(delta.getInserts()),
-        now+"-inserts.ttl"
-      );
-      taskService.writeTtlFile(
         Constants.DELTA_DELETES_GRAPH_PREFIX,
         extractModel(delta.getDeletes()),
         now+"-deletes.ttl"
+      );
+      
+      taskService.writeTtlFile(
+        Constants.DELTA_INSERTS_GRAPH_PREFIX,
+        extractModel(delta.getInserts()),
+        now+"-inserts.ttl"
       );
     }
 
