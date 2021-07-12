@@ -1,5 +1,6 @@
 package mu.semte.ch.api.kalliope.rest;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.slf4j.Slf4j;
 import mu.semte.ch.lib.dto.Delta;
@@ -42,9 +45,9 @@ public class AppController {
   }
 
   @PostMapping("/bulk")
-  public ResponseEntity<Void> bulk(@RequestBody String dataModel) {
-    persistService.writeBulk(ModelUtils.toModel(dataModel, Lang.TURTLE.getName()));
-    
+  public ResponseEntity<Void> bulk(@RequestParam("file") MultipartFile file,
+  RedirectAttributes redirectAttributes) throws IOException {
+    persistService.writeBulk(ModelUtils.toModel(file.getInputStream(), Lang.TURTLE.getName()));
     return ResponseEntity.accepted().build();
   }
   
@@ -59,27 +62,6 @@ public class AppController {
     String response = ModelUtils.toString(dataset, Lang.JSONLD);
     return ResponseEntity.ok(response); 
   }
-
-  // @GetMapping(value = "/inserts",
-  // produces = "application/ld+json")
-  // public ResponseEntity<String> insert(
-  // @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since, 
-  // @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime snapshot) {
-    
-  //   var model = persistService.getAllInserts(since, snapshot);
-  //   String response = ModelUtils.toString(model, Lang.JSONLD);
-  //   return ResponseEntity.ok(response); 
-  // }
-  
-  // @GetMapping(value = "/deletes",
-  // produces = "application/ld+json")
-  // public ResponseEntity<String> deletes(
-  // @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since, 
-  // @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime snapshot) {
-  //   var model = persistService.getAllDeletes(since, snapshot);
-  //   String response = ModelUtils.toString(model, Lang.JSONLD);
-  //   return ResponseEntity.ok(response); 
-  // }
   
   @GetMapping(value = "/consolidated",
   produces = "application/ld+json")

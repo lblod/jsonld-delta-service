@@ -47,6 +47,8 @@ services:
     volumes:
       - ./config/kalliope:/config
       - ./data/files:/share
+    ports:
+      - 8080:80
     environment:
       SERVER_PORT: "80" # optionals
       SHARE_FOLDER_DIRECTORY: "/share" # optionals
