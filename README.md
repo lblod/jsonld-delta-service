@@ -14,10 +14,12 @@ Include the service in `docker-compose.yml`.
     image: lblod/jsonld-delta-service
     volumes:
       - ./data/files:/share
+      - ./config/kalliope:/config
     environment:
       SERVER_PORT: "80"
       LOGGING_LEVEL: "INFO"
       SPARQL_ENDPOINT: "http://database:8890/sparql"
+      SPRING_SECURITY_CONFIG: /config/security.yml
 ```
 
 ### Configure Delta Notifier
@@ -57,6 +59,50 @@ match "/v3/api-docs/*path", %{ layer: :api_services, accept: %{ json: true } } d
     forward conn, path, "http://jsonld-delta-service/consolidated/"
   end
 ...
+
+
+```
+
+### Add security config
+- Create a file under `/config/kalliope/security.yml`
+- Paste the following:
+ ```
+  application:
+  security:
+    enabled: true
+    source: /config/source.json
+    output: /config/out.json
+    allowedIpAddresses:
+      - 10.10.10.10 # list of whitelisted ips
+server:
+  forward-headers-strategy: NATIVE
+  tomcat:
+    remote-ip-header: x-real-ip # letsencrypt proxy
+
+```
+- If it's the first time app is started in this development server, you need to create the credentials.
+- Create a file under `/config/kalliope/source.json`
+- Add the users (change values accordingly). The file will be automatically deleted at startup and replaced by
+  an encrypted one under `config/kalliope/out.json`
+- Example of `/config/kalliope/source.json` :
+``` 
+     [
+    {
+      "username": "boris",
+      "password": "5678",
+      "roles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "username": "nordine",
+      "password": "1234",
+      "roles": [
+        "USER"
+      ]
+    }
+   ]
+
 ```
 ### Boot up the system
 
