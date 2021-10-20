@@ -13,18 +13,20 @@ defmodule Acl.UserGroups.Config do
         name: "public",
         useage: [:read],
         access: %AlwaysAccessible{},
-        graphs: [ %GraphSpec{
+        graphs: [%GraphSpec{
           graph: "http://mu.semte.ch/graphs/public",
           constraint: %ResourceConstraint{
             resource_types: [
               # todo add classes
             ]
-          } } ] },
+          }
+        }]
+      },
       %GroupSpec{
         name: "contacthub",
         useage: [:write, :read_for_write, :read],
         access: %AlwaysAccessible{},
-        graphs: [ %GraphSpec{
+        graphs: [%GraphSpec{
           graph: "http://mu.semte.ch/graphs/contacthub",
           constraint: %ResourceConstraint{
             resource_types: [
@@ -36,7 +38,9 @@ defmodule Acl.UserGroups.Config do
               "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#DataContainer",
               "http://oscaf.sourceforge.net/ndo.html#DownloadEvent",
             ]
-          } } ] },
+          }
+        }]
+      },
       %GraphCleanup{
         originating_graph: "http://mu.semte.ch/application",
         useage: [:read, :write],

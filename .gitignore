@@ -16,3 +16,5 @@ test/data/
 test/config/db/
 .vscode/settings.json
 .vscode/launch.json
+
+.idea

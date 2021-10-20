@@ -10,6 +10,8 @@ sparql:
   defaultBatchSize: ${BATCH_SIZE:100}
 
 spring:
+  config:
+    import: ${SPRING_SECURITY_CONFIG:classpath:security.yml}
   servlet:
     multipart:
       enabled: true
@@ -19,3 +21,7 @@ spring:
 logging:
   level:
     root: ${LOGGING_LEVEL:INFO}
+
+
+
+
