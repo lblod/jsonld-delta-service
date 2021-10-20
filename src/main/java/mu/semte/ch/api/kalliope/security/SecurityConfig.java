@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.actuate.context.ShutdownEndpoint;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -46,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    var whitelist = allowedIpAddresses.stream().collect(Collectors.joining("') or hasIpAddress('", "hasIpAddress('","')"));
+    var whitelist = allowedIpAddresses.stream().collect(Collectors.joining("') or hasIpAddress('", "hasIpAddress('", "')"));
     String accesses = "authenticated and (%s)".formatted(whitelist);
     log.warn("access: '{}'", accesses);
     http.cors().and()
@@ -59,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
         .realmName("KALLIOPE")
         .and()
         .exceptionHandling()
-        .authenticationEntryPoint( (req, resp, e) -> resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
+        .authenticationEntryPoint((req, resp, e) -> resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
         .and()
         .formLogin()
         .disable()
@@ -79,7 +78,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
       var users = mapper.readValue(config, mu.semte.ch.api.kalliope.security.User[].class);
       var builder = auth.inMemoryAuthentication().passwordEncoder(passwordEncoder());
       Stream.of(users).forEach(u -> {
-        var user = User.withUsername(u.getUsername()).password(u.getPassword()).roles(u.getRoles().toArray(new String[]{})).build();
+        var user = User.withUsername(u.getUsername())
+                       .password(u.getPassword())
+                       .roles(u.getRoles().toArray(new String[]{}))
+                       .build();
         builder.withUser(user);
       });
     }
