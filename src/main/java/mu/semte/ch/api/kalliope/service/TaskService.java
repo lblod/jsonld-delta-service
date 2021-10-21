@@ -1,21 +1,13 @@
 package mu.semte.ch.api.kalliope.service;
 
-import static java.util.Optional.ofNullable;
-import static mu.semte.ch.api.kalliope.Constants.LOGICAL_FILE_PREFIX;
-import static mu.semte.ch.lib.utils.ModelUtils.filenameToLang;
-import static mu.semte.ch.lib.utils.ModelUtils.formattedDate;
-import static mu.semte.ch.lib.utils.ModelUtils.getContentType;
-import static mu.semte.ch.lib.utils.ModelUtils.getExtension;
-import static mu.semte.ch.lib.utils.ModelUtils.uuid;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import mu.semte.ch.lib.dto.FileDataObject;
+import mu.semte.ch.lib.utils.ModelUtils;
+import mu.semte.ch.lib.utils.SparqlClient;
+import mu.semte.ch.lib.utils.SparqlQueryStore;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Model;
@@ -23,12 +15,18 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import mu.semte.ch.lib.dto.FileDataObject;
-import mu.semte.ch.lib.utils.ModelUtils;
-import mu.semte.ch.lib.utils.SparqlClient;
-import mu.semte.ch.lib.utils.SparqlQueryStore;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static java.util.Optional.ofNullable;
+import static mu.semte.ch.api.kalliope.Constants.LOGICAL_FILE_PREFIX;
+import static mu.semte.ch.lib.utils.ModelUtils.filenameToLang;
+import static mu.semte.ch.lib.utils.ModelUtils.formattedDate;
+import static mu.semte.ch.lib.utils.ModelUtils.getContentType;
+import static mu.semte.ch.lib.utils.ModelUtils.getExtension;
+import static mu.semte.ch.lib.utils.ModelUtils.uuid;
 
 @Service
 @Slf4j
@@ -45,7 +43,7 @@ public class TaskService {
     this.queryStore = queryStore;
     this.sparqlClient = sparqlClient;
   }
-  
+
   public Model loadDeltaModel(String graphImportedTriples) {
     String queryTask = queryStore.getQuery("loadImportedTriples").formatted(graphImportedTriples);
     return sparqlClient.executeSelectQuery(queryTask);
@@ -83,17 +81,17 @@ public class TaskService {
     var file = ModelUtils.toFile(content, rdfLang, path);
     var fileSize = file.length();
     var queryParameters = ImmutableMap.<String, Object>builder()
-            .put("graph", graph)
-            .put("physicalFile", physicalFile)
-            .put("logicalFile", logicalFile)
-            .put("phyId", phyId)
-            .put("phyFilename", phyFilename)
-            .put("now", now)
-            .put("fileSize", fileSize)
-            .put("loId", loId)
-            .put("logicalFileName", logicalFileName)
-            .put("fileExtension", "nt")
-            .put("contentType", contentType).build();
+                                      .put("graph", graph)
+                                      .put("physicalFile", physicalFile)
+                                      .put("logicalFile", logicalFile)
+                                      .put("phyId", phyId)
+                                      .put("phyFilename", phyFilename)
+                                      .put("now", now)
+                                      .put("fileSize", fileSize)
+                                      .put("loId", loId)
+                                      .put("logicalFileName", logicalFileName)
+                                      .put("fileExtension", "nt")
+                                      .put("contentType", contentType).build();
 
     var queryStr = queryStore.getQueryWithParameters("writeTtlFile", queryParameters);
     sparqlClient.executeUpdateQuery(queryStr);
@@ -103,9 +101,9 @@ public class TaskService {
   @SneakyThrows
   public List<FileDataObject> readTurtleFiles(List<String> graphUris, LocalDateTime since, LocalDateTime snapshot) {
     var queryParameters = ImmutableMap.<String, Object>builder()
-      .put("graphs", graphUris)
-      .put("since", ofNullable(since).map(ModelUtils::formattedDate).orElse(""))
-      .put("snapshot", ofNullable(snapshot).map(ModelUtils::formattedDate).orElse("")).build();
+                                      .put("graphs", graphUris)
+                                      .put("since", ofNullable(since).map(ModelUtils::formattedDate).orElse(""))
+                                      .put("snapshot", ofNullable(snapshot).map(ModelUtils::formattedDate).orElse("")).build();
 
     String query = queryStore.getQueryWithParameters("readTtlFile", queryParameters);
 
@@ -117,17 +115,20 @@ public class TaskService {
 
 
       resultSet.forEachRemaining(r -> turtleFiles.add(FileDataObject.builder()
-        .graph(r.getResource("graph").getURI())
-        .physicalFileName(r.getLiteral("physicalFileName").getString())
-        .physicalFile("%s/%s".formatted(shareFolderPath, r.getLiteral("physicalFileName").getString()))
-        .physicalId(r.getLiteral("physicalId").getString())
-        .creator(r.getResource("creator").getURI())
-        .logicalId(r.getLiteral("logicalId").getString())
-        .logicalFileName(r.getLiteral("logicalFileName").getString())
-        .fileSize(r.getLiteral("fileSize").getString())
-        .fileExtension(r.getLiteral("fileExtension").getString())
-        .contentType(r.getLiteral("contentType").getString())
-        .build()));
+                                                                    .graph(r.getResource("graph").getURI())
+                                                                    .physicalFileName(r.getLiteral("physicalFileName")
+                                                                                       .getString())
+                                                                    .physicalFile("%s/%s".formatted(shareFolderPath, r.getLiteral("physicalFileName")
+                                                                                                                      .getString()))
+                                                                    .physicalId(r.getLiteral("physicalId").getString())
+                                                                    .creator(r.getResource("creator").getURI())
+                                                                    .logicalId(r.getLiteral("logicalId").getString())
+                                                                    .logicalFileName(r.getLiteral("logicalFileName")
+                                                                                      .getString())
+                                                                    .fileSize(r.getLiteral("fileSize").getString())
+                                                                    .fileExtension(r.getLiteral("fileExtension").getString())
+                                                                    .contentType(r.getLiteral("contentType").getString())
+                                                                    .build()));
       return turtleFiles;
     });
   }

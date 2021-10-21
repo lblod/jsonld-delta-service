@@ -1,0 +1,7 @@
+application:
+  security:
+    source: /tmp/source-example.json
+    output: /tmp/out.json
+    allowedIpAddresses:
+      - 127.0.0.1
+      - 0:0:0:0:0:0:0:1

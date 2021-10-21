@@ -6,8 +6,17 @@ services:
       DEFAULT_MU_AUTH_ALLOWED_GROUPS_HEADER: "[{\"variables\":[],\"name\":\"public\"}, {\"variables\":[],\"name\":\"harvesting\"}, {\"variables\":[],\"name\":\"clean\"}]"
       DEFAULT_ACCESS_CONTROL_ALLOW_ORIGIN_HEADER: "*"
     restart: always
+  web:
+    image: nginx:1.21.3
     ports:
-      - "80:80"
+      - mode: host
+        protocol: tcp
+        published: 80
+        target: 80
+    volumes:
+      - ./config/proxy:/etc/nginx/conf.d
+      - ./config/proxy/web.conf:/etc/nginx/nginx.conf:ro
+    restart: always
   dispatcher:
     image: semtech/mu-dispatcher:2.1.0-beta.1
     volumes:
@@ -47,17 +56,13 @@ services:
     volumes:
       - ./config/kalliope:/config
       - ./data/files:/share
-    ports:
-      - 8080:80
     environment:
-      SERVER_PORT: "80" # optionals
       SHARE_FOLDER_DIRECTORY: "/share" # optionals
-      BATCH_SIZE: 20 # optionals
-      APPLICATION_PROFILE_PATH: "/config/application-profile.ttl" # optionals
-      LOGGING_LEVEL: "DEBUG" # optionals
+      LOGGING_LEVEL: "INFO" # optionals
       SPARQL_ENDPOINT: "http://database:8890/sparql" # optionals
       MAX_REQUEST_SIZE: "512MB" # optionals
       MAX_FILE_SIZE: "512MB" # optionals
+      SPRING_SECURITY_CONFIG: /config/security.yml
     restart: always
   yasgui:
     image: erikap/yasgui

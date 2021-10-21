@@ -1,0 +1,16 @@
+[
+  {
+    "roles": [
+      "ADMIN"
+    ],
+    "username": "boris",
+    "password": "$2a$10$oInAcv7X4cMHhjJiuZV71uq/I9/3htKqcA5MWsVOWWZuK9qNtNYtq"
+  },
+  {
+    "roles": [
+      "USER"
+    ],
+    "username": "nordine",
+    "password": "$2a$10$8JSKEfUZoNumxKorSkFvMuE.qv9wknruhLMu169eTQwuIOr2Vgyea"
+  }
+]
