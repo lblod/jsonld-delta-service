@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.actuate.context.ShutdownEndpoint;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -45,8 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    var whitelist = allowedIpAddresses.stream().collect(Collectors.joining("') or hasIpAddress('", "hasIpAddress('", "')"));
-    String accesses = "authenticated and (%s)".formatted(whitelist);
+    var whitelist = "";
+    if(!allowedIpAddresses.isEmpty()){
+      whitelist = "and (%s)".formatted(allowedIpAddresses.stream().collect(Collectors.joining("') or hasIpAddress('", "hasIpAddress('", "')")));
+    }
+    String accesses = "authenticated %s".formatted(whitelist);
     log.warn("access: '{}'", accesses);
     http.cors().and()
         .authorizeRequests()
