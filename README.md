@@ -21,7 +21,7 @@ Include the service in `docker-compose.yml`.
       SERVER_PORT: "80"
       LOGGING_LEVEL: "INFO"
       SPARQL_ENDPOINT: "http://database:8890/sparql"
-      SPRING_SECURITY_CONFIG: /config/security.yml
+      SPRING_SECURITY_CONFIG: "/config/security.yml"
 ```
 
 ### Configure Delta Notifier
