@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.4.3</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>mu.semte.ch</groupId>
   <artifactId>jsonld-delta-service</artifactId>
-  <version>0.0.4-SNAPSHOT</version>
+  <version>0.0.4</version>
   <name>jsonld-delta-service</name>
   <description>Contact Hub Kalliope API</description>
   <licenses>
@@ -40,7 +39,7 @@
     <connection>
       scm:git:git@github.com:lblod/jsonld-delta-service.git
     </connection>
-    <tag>HEAD</tag>
+    <tag>0.0.4</tag>
   </scm>
   <!-- <repositories>
     <repository>
@@ -54,7 +53,7 @@
   <repositories>
     <repository>
       <id>github-public</id>
-      <url>https://public:&#103;hp_6thlNa1btFpUo7SUEa1a5ypPpwkHOf25qgcG@maven.pkg.github.com/lblod/*</url>
+      <url>https://public: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@maven.pkg.github.com/lblod/*</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
