@@ -31,6 +31,7 @@ import java.util.stream.Stream;
 
 @Configuration
 @ConfigurationProperties("application.security")
+@ConditionalOnProperty(prefix = "application.security", name = "enabled", havingValue = "true")
 @Order(0)
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements ApplicationContextAware, CommandLineRunner {
