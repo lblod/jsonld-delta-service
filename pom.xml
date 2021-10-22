@@ -24,7 +24,7 @@
       <email>code@devloed.com</email>
       <organization>LBLOD</organization>
       <organizationUrl>https://lokaalbestuur.vlaanderen.be/</organizationUrl>
-      <url>https://github.com/bdevloed/jsonld-delta-service</url>
+      <url>https://github.com/lblod/jsonld-delta-service</url>
       <roles>
         <role>Developer</role>
       </roles>
@@ -38,7 +38,7 @@
   </properties>
   <scm>
     <connection>
-      scm:git:git@github.com:bdevloed/jsonld-delta-service.git
+      scm:git:git@github.com:lblod/jsonld-delta-service.git
     </connection>
     <tag>HEAD</tag>
   </scm>
