@@ -9,7 +9,7 @@
   </parent>
   <groupId>mu.semte.ch</groupId>
   <artifactId>jsonld-delta-service</artifactId>
-  <version>0.O.5-SNAPSHOT</version>
+  <version>0.3.0</version>
   <name>jsonld-delta-service</name>
   <description>Contact Hub Kalliope API</description>
   <licenses>
@@ -39,7 +39,7 @@
     <connection>
       scm:git:git@github.com:lblod/jsonld-delta-service.git
     </connection>
-    <tag>HEAD</tag>
+    <tag>0.3.0</tag>
   </scm>
   <!-- <repositories>
     <repository>
