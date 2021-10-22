@@ -13,7 +13,7 @@ Include the service in `docker-compose.yml`.
 
 ```
   jsonld-delta-service:
-    image: lblod/jsonld-delta-service
+    image: lblod/jsonld-delta-service:0.3.0
     volumes:
       - ./data/files:/share
       - ./config/kalliope:/config
