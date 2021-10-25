@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import static mu.semte.ch.lib.utils.ModelUtils.toModel;
 import static org.apache.commons.io.FilenameUtils.getExtension;
 import static org.apache.jena.riot.Lang.TURTLE;
 
@@ -40,8 +41,8 @@ public class BulkRunner {
     this.queryStore = queryStore;
   }
 
-  @Scheduled(initialDelay = 1000,
-             fixedDelay = 60000) // run 30 seconds after startup & then every 60 seconds
+  @Scheduled(initialDelay = 30000,
+             fixedDelay = 600000) // run 30 seconds after startup & then every 10 minutes
   public void run() throws IOException {
     var bulkDir = Paths.get(applicationBulkDirectory);
     if (isDatabaseUp() && Files.exists(bulkDir) && Files.isDirectory(bulkDir)) {
@@ -55,7 +56,7 @@ public class BulkRunner {
                 .forEach(f -> {
                   log.info("processing file {}", f.getName());
                   try {
-                    persistService.writeBulk(ModelUtils.toModel(new FileInputStream(f), TURTLE.getName()), () -> this.renameFileAfterProcessed(f)); //rename file
+                    persistService.writeBulk(toModel(new FileInputStream(f), TURTLE.getName()), () -> this.renameFileAfterProcessed(f)); //rename file
                   }
                   catch (IOException e) {
                     log.error("an error occurred while processing file", e);
