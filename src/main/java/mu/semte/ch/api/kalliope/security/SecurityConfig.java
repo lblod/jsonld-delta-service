@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
     log.warn("access: '{}'", accesses);
     http.cors().and()
         .authorizeRequests()
+        .antMatchers("/delta/**").permitAll()
         .anyRequest().access(accesses)
         .and()
         .csrf()
