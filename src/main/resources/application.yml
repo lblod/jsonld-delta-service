@@ -24,7 +24,7 @@ logging:
 
 application:
   bulk:
-    directory: ${APPLICATION_BULK_DIRECTORY:/confik/bulk}
+    directory: ${APPLICATION_BULK_DIRECTORY:/config/bulk}
 
 
 
