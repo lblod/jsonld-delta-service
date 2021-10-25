@@ -58,6 +58,7 @@ services:
       - ./data/files:/share
     environment:
       SHARE_FOLDER_DIRECTORY: "/share" # optionals
+      APPLICATION_BULK_DIRECTORY: "/config/bulk" # optionals
       LOGGING_LEVEL: "INFO" # optionals
       SPARQL_ENDPOINT: "http://database:8890/sparql" # optionals
       MAX_REQUEST_SIZE: "512MB" # optionals

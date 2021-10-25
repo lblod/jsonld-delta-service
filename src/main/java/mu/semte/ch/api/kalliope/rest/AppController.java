@@ -43,14 +43,6 @@ public class AppController {
     return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/bulk")
-  public ResponseEntity<Void> bulk(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) throws IOException {
-    persistService.writeBulk(ModelUtils.toModel(file.getInputStream(), Lang.TURTLE.getName()));
-    return ResponseEntity.accepted().build();
-  }
-
-
   @GetMapping(value = "/changes",
               produces = "application/ld+json")
   public ResponseEntity<String> change(
