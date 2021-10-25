@@ -50,19 +50,11 @@ public class BulkRunner {
         stream
                 .peek(path -> log.debug(path.getFileName().toString()))
                 .filter(path -> !Files.isDirectory(path) && TURTLE.getFileExtensions()
-                                                                       .contains(getExtension(path.getFileName()
-                                                                                                  .toString())))
+                                                                  .contains(getExtension(path.getFileName()
+                                                                                             .toString())))
                 .map(Path::toFile)
-                .forEach(f -> {
-                  log.info("processing file {}", f.getName());
-                  try {
-                    persistService.writeBulk(toModel(new FileInputStream(f), TURTLE.getName()), () -> this.renameFileAfterProcessed(f)); //rename file
-                  }
-                  catch (IOException e) {
-                    log.error("an error occurred while processing file", e);
-                  }
-
-                });
+                .peek(f -> log.info("processing file {}", f.getName()))
+                .forEach(this::writeBulk);
       }
     }
   }
@@ -71,6 +63,11 @@ public class BulkRunner {
   private Void renameFileAfterProcessed(File f) {
     FileUtils.moveFile(f, new File(f.getAbsolutePath() + ".processed"));
     return null;
+  }
+
+  @SneakyThrows
+  private void writeBulk(File f) {
+    persistService.writeBulk(toModel(new FileInputStream(f), TURTLE.getName()), () -> this.renameFileAfterProcessed(f));
   }
 
   private boolean isDatabaseUp() {
