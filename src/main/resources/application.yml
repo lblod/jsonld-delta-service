@@ -22,6 +22,10 @@ logging:
   level:
     root: ${LOGGING_LEVEL:INFO}
 
+application:
+  bulk:
+    directory: ${APPLICATION_BULK_DIRECTORY:/confik/bulk}
+
 
 
 

@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 
 @Service
@@ -49,7 +51,7 @@ public class PersistService {
   }
 
   @Async
-  public void writeBulk(Model model) {
+  public <T> void writeBulk(Model model, Supplier<T> onTtlFileWritten) {
     var now = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
 
     taskService.writeTtlFile(
@@ -57,6 +59,7 @@ public class PersistService {
             model,
             now + "-inserts.ttl"
     );
+    onTtlFileWritten.get();
   }
 
   private Model extractModel(List<Triple> inserts) {
