@@ -31,7 +31,7 @@
   </developers>
   <properties>
     <java.version>15</java.version>
-    <jena.version>3.17.0</jena.version>
+    <jena.version>4.2.0</jena.version>
     <commons-text.version>1.9</commons-text.version>
     <poi.version>5.0.0</poi.version>
   </properties>
