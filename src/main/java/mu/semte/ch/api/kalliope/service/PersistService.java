@@ -37,17 +37,27 @@ public class PersistService {
   public void writeDelta(Delta delta) {
     var now = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
 
-    taskService.writeTtlFile(
-            Constants.DELTA_DELETES_GRAPH_PREFIX,
-            extractModel(delta.getDeletes()),
-            now + "-deletes.ttl"
-    );
+    Model deletes = extractModel(delta.getDeletes());
+    if(!deletes.isEmpty()) {
+      taskService.writeTtlFile(
+        Constants.DELTA_DELETES_GRAPH_PREFIX,
+        deletes,
+        now + "-deletes.ttl"
+      );
+    } else {
+      log.trace("No delete triples found in delta. Nothing to persist.");
+    }
 
-    taskService.writeTtlFile(
-            Constants.DELTA_INSERTS_GRAPH_PREFIX,
-            extractModel(delta.getInserts()),
-            now + "-inserts.ttl"
-    );
+    Model inserts = extractModel(delta.getInserts());
+    if(!inserts.isEmpty()) {
+      taskService.writeTtlFile(
+        Constants.DELTA_INSERTS_GRAPH_PREFIX,
+        inserts,
+        now + "-inserts.ttl"
+      );
+    } else {
+      log.trace("No insert triples found in delta. Nothing to persist.");
+    }
   }
 
   @Async
