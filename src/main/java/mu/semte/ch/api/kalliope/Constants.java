@@ -15,5 +15,7 @@ public interface Constants {
   String DELETE_ACTION = "http://schema.org/DeleteAction";
   String INSERT_ACTION = "http://schema.org/InsertAction";
 
+  String ORGANIZATIONS_PRODUCER_GRAPH = "http://redpencil.data.gift/id/deltas/producer/organizations";
+
   String DC_DATE = "http://purl.org/dc/terms/date";
 }

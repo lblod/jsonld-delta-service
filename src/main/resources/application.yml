@@ -8,6 +8,8 @@ sparql:
   endpoint: ${SPARQL_ENDPOINT:http://database:8890/sparql}
   defaultGraphUri: ${TARGET_GRAPH:http://mu.semte.ch/application}
   defaultBatchSize: ${BATCH_SIZE:100}
+  defaultLimitSize: ${LIMIT_SIZE:1000}
+  maxRetry: ${MAX_RETRY:5}
 
 spring:
   config:
@@ -23,7 +25,7 @@ logging:
     root: ${LOGGING_LEVEL:INFO}
 
 application:
-  bulk:
+  bulk: 
     directory: ${APPLICATION_BULK_DIRECTORY:/config/bulk}
 
 

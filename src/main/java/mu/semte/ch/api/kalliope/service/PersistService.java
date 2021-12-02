@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 
@@ -129,6 +128,21 @@ public class PersistService {
     );
 
     return d;
+  }
+
+  public Dataset getConsolidated() {
+    Dataset d = DatasetFactory.create(getResponseMeta(Constants.DELTA_CONSOLIDATED_GRAPH_PREFIX));
+
+    d.addNamedModel(
+            Constants.DELTA_CONSOLIDATED_GRAPH_PREFIX,
+            getConsolidatedGraph()
+    );
+
+    return d;
+  }
+
+  public Model getConsolidatedGraph() {
+    return taskService.fetchTriplesFromGraph(Constants.ORGANIZATIONS_PRODUCER_GRAPH);
   }
 
   public Model getConsolidatedGraph(LocalDateTime since, LocalDateTime snapshot) {

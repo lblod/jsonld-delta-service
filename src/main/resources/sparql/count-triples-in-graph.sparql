@@ -1,0 +1,1 @@
+ SELECT (count(?s) as ?count) WHERE { GRAPH <%s> { ?s ?p ?o } }

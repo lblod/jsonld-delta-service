@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.Map;
 
 import static java.util.Optional.ofNullable;
 import static mu.semte.ch.api.kalliope.Constants.LOGICAL_FILE_PREFIX;
@@ -38,6 +40,10 @@ public class TaskService {
   private String shareFolderPath;
   @Value("${sparql.defaultBatchSize}")
   private int defaultBatchSize;
+  @Value("${sparql.defaultLimitSize}")
+  private int defaultLimitSize;
+  @Value("${sparql.maxRetry}")
+  private int maxRetry;
 
   public TaskService(SparqlQueryStore queryStore, SparqlClient sparqlClient) {
     this.queryStore = queryStore;
@@ -136,4 +142,26 @@ public class TaskService {
   public List<FileDataObject> readTurtleFiles(String graphUri, LocalDateTime since, LocalDateTime snapshot) {
     return readTurtleFiles(Collections.singletonList(graphUri), since, snapshot);
   }
+
+  public Model fetchTriplesFromGraph(String graph) {
+    var countTriplesQuery = queryStore.getQuery("countTriplesInGraph").formatted(graph);
+    var countTriples = sparqlClient.executeSelectQuery(countTriplesQuery, resultSet -> {
+      if (!resultSet.hasNext()) {
+        return 0;
+      }
+      return resultSet.next().getLiteral("count").getInt();
+    });
+    var pagesCount = countTriples > defaultLimitSize ? countTriples / defaultLimitSize : defaultLimitSize;
+
+    return IntStream.rangeClosed(0, pagesCount)
+                    .mapToObj(page -> {
+                      var query = queryStore.getQueryWithParameters("triplesInGraph",
+                                                                    Map.of("graphUri", graph,
+                                                                          "limitSize", defaultLimitSize,
+                                                                          "offsetNumber", page * defaultLimitSize
+                                                                    )
+                      );
+                      return sparqlClient.executeSelectQuery(query);
+                    }).reduce(ModelFactory.createDefaultModel(), Model::add);
+                  }
 }
