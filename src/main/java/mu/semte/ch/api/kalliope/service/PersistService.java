@@ -33,19 +33,19 @@ public class PersistService {
   }
 
   public Model getConsolidatedGraph() {
-    return taskService.fetchTriplesFromGraph(Constants.ORGANIZATIONS_PRODUCER_GRAPH);
+    return taskService.fetchModelFromDump(Constants.ORGANIZATIONS_DUMP_SUBJECT);
   }
 
   private Model getResponseMeta(String graphName) {
     Model m = ModelFactory.createDefaultModel();
-
+    
     m.add(
-            ResourceFactory.createResource(graphName),
-            ResourceFactory.createProperty(Constants.DC_DATE),
-            ResourceFactory.createTypedLiteral(
-                    ModelUtils.formattedDate(LocalDateTime.now()),
-                    org.apache.jena.datatypes.xsd.XSDDatatype.XSDdateTime
-            )
+      ResourceFactory.createResource(graphName),
+      ResourceFactory.createProperty(Constants.DC_DATE),
+      ResourceFactory.createTypedLiteral(
+        ModelUtils.formattedDate(LocalDateTime.now()),
+        org.apache.jena.datatypes.xsd.XSDDatatype.XSDdateTime
+      )
     );
 
     return m;

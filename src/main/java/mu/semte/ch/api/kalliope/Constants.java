@@ -13,6 +13,7 @@ public interface Constants {
   String INSERT_ACTION = "http://schema.org/InsertAction";
 
   String ORGANIZATIONS_PRODUCER_GRAPH = "http://redpencil.data.gift/id/deltas/producer/organizations";
+  String ORGANIZATIONS_DUMP_SUBJECT = "http://data.lblod.info/datasets/delta-producer/dumps/OrganizationsCacheGraphDump";
 
   String DC_DATE = "http://purl.org/dc/terms/date";
 }
