@@ -1,17 +1,8 @@
 package mu.semte.ch.api.kalliope.service;
 
-import java.util.Map;
-import java.util.stream.IntStream;
-
-import com.github.jsonldjava.core.RDFParser;
-
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.RDFParserBuilder;
-import org.apache.jena.riot.system.stream.LocatorHTTP;
-import org.apache.jena.riot.system.stream.StreamManager;
-import org.apache.jena.sparql.function.library.uuid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
