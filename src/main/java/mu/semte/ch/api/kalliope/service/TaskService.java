@@ -1,10 +1,8 @@
 package mu.semte.ch.api.kalliope.service;
 
-import java.util.Map;
-import java.util.stream.IntStream;
-
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.RDFDataMgr;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,25 +28,18 @@ public class TaskService {
     this.sparqlClient = sparqlClient;
   }
 
-  public Model fetchTriplesFromGraph(String graph) {
-    var countTriplesQuery = queryStore.getQuery("countTriplesInGraph").formatted(graph);
-    var countTriples = sparqlClient.executeSelectQuery(countTriplesQuery, resultSet -> {
+  public Model fetchModelFromDump(String subject) {
+    var query = queryStore.getQuery("lastDump").formatted(subject);
+    var fileName = sparqlClient.executeSelectQuery(query, resultSet -> {
       if (!resultSet.hasNext()) {
-        return 0;
+        return "";
       }
-      return resultSet.next().getLiteral("count").getInt();
+      return resultSet.next().getResource("phyiscalFile").getURI();
     });
-    var pagesCount = countTriples > defaultLimitSize ? countTriples / defaultLimitSize : defaultLimitSize;
-
-    return IntStream.rangeClosed(0, pagesCount)
-                    .mapToObj(page -> {
-                      var query = queryStore.getQueryWithParameters("triplesInGraph",
-                                                                    Map.of("graphUri", graph,
-                                                                          "limitSize", defaultLimitSize,
-                                                                          "offsetNumber", page * defaultLimitSize
-                                                                    )
-                      );
-                      return sparqlClient.executeSelectQuery(query);
-                    }).reduce(ModelFactory.createDefaultModel(), Model::add);
-                  }
+    if (fileName.isEmpty()) {
+      return ModelFactory.createDefaultModel();
+    } else {
+      return RDFDataMgr.loadModel(fileName.replaceAll("share://", "file://share/"));
+    }
+   }
 }
