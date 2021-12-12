@@ -34,6 +34,7 @@
     <jena.version>4.2.0</jena.version>
     <commons-text.version>1.9</commons-text.version>
     <poi.version>5.0.0</poi.version>
+    <log4j2.version>2.15.0</log4j2.version>
   </properties>
   <scm>
     <connection>
