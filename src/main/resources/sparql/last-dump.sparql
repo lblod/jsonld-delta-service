@@ -1,13 +1,15 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX nie: <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 SELECT * WHERE {
   ?sub dct:subject <%s> ;
        dcat:distribution ?distribution.
-  ?distribution dct:subject ?file;
-                dct:modified ?modified.
-  ?phyiscalFile nie:dataSource ?file.
-  
+  FILTER NOT EXISTS {
+   		?revision prov:wasRevisionOf  ?sub.
+	}
+  ?distribution 
+    dct:subject ?file;
+    dct:created ?created.
+  ?phyiscalFile nie:dataSource ?file. 
 }
-ORDER BY DESC(?modified)
-LIMIT 1
