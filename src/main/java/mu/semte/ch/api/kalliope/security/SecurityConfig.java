@@ -44,12 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
 
   private final ObjectMapper mapper = new ObjectMapper();
 
-
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     var whitelist = "";
-    if(!allowedIpAddresses.isEmpty()){
-      whitelist = "and (%s)".formatted(allowedIpAddresses.stream().collect(Collectors.joining("') or hasIpAddress('", "hasIpAddress('", "')")));
+    if (!allowedIpAddresses.isEmpty()) {
+      whitelist = "and (%s)".formatted(
+          allowedIpAddresses.stream().collect(Collectors.joining("') or hasIpAddress('", "hasIpAddress('", "')")));
     }
     String accesses = "authenticated %s".formatted(whitelist);
     log.warn("access: '{}'", accesses);
@@ -77,17 +77,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
     return new BCryptPasswordEncoder();
   }
 
-  @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+  @Override
+  public void configure(AuthenticationManagerBuilder auth) throws Exception {
     var config = new File(applicationSecurityConfig);
     if (config.exists()) {
       var users = mapper.readValue(config, mu.semte.ch.api.kalliope.security.User[].class);
       var builder = auth.inMemoryAuthentication().passwordEncoder(passwordEncoder());
       Stream.of(users).forEach(u -> {
         var user = User.withUsername(u.getUsername())
-                       .password(u.getPassword())
-                       .roles(u.getRoles().toArray(new String[]{}))
-                       .build();
+            .password(u.getPassword())
+            .roles(u.getRoles().toArray(new String[] {}))
+            .build();
         builder.withUser(user);
       });
     }
@@ -100,8 +100,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
 
     if (source.exists()) {
       var users = mapper.readValue(source, mu.semte.ch.api.kalliope.security.User[].class);
-      var encodedUsers = Stream.of(users).map(u -> u.toBuilder().password(passwordEncoder().encode(u.getPassword())).build())
-                               .collect(Collectors.toList());
+      var encodedUsers = Stream.of(users)
+          .map(u -> u.toBuilder().password(passwordEncoder().encode(u.getPassword())).build())
+          .collect(Collectors.toList());
       var bytes = mapper.writeValueAsBytes(encodedUsers);
 
       FileUtils.writeByteArrayToFile(config, bytes);
@@ -110,8 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
       ShutdownEndpoint shutdownEndpoint = new ShutdownEndpoint();
       shutdownEndpoint.setApplicationContext(this.getApplicationContext());
       shutdownEndpoint.shutdown();
-    }
-    else {
+    } else {
       log.warn("source doesn't exist");
     }
   }
