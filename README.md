@@ -24,31 +24,6 @@ Include the service in `docker-compose.yml`.
       SPRING_SECURITY_CONFIG: "/config/security.yml"
 ```
 
-### Configure Delta Notifier
-
-Include the delta notifier into the stack following the instructions documented
-on [delta-notifier](https://github.com/mu-semtech/delta-notifier). And configure `config/delta/rules.js` to send delta
-messages to the jsonld delta service in the `v0.0.1` format. e.g.:
-
-```
-export default [
-    {
-      match: {
-        subject: {
-        }
-      },
-      callback: {
-        url: "http://jsonld-delta-service/delta", method: "POST"
-      },
-      options: {
-        resourceFormat: "v0.0.1",
-        gracePeriod: 1000,
-        ignoreFromSelf: true
-      }
-    }
-  ]
-```
-
 ### Configure the dispatcher
 
 Add the jsonld-delta-service routes to the [dispatcher](https://github.com/mu-semtech/mu-dispatcher) configuration.
@@ -58,10 +33,6 @@ e.g.:
 ...
 match "/v3/api-docs/*path", %{ layer: :api_services, accept: %{ json: true } } do
     forward conn, path, "http://jsonld-delta-service/v3/api-docs/"
-  end
-
-  match "/changes/*path", %{ layer: :api_services, accept: %{ json: true } } do
-    forward conn, path, "http://jsonld-delta-service/changes/"
   end
 
   match "/consolidated/*path", %{ layer: :api_services, accept: %{ json: true } } do
@@ -114,7 +85,7 @@ server:
         "USER"
       ]
     }
-   ]
+  ]
 
 ```
 
@@ -135,30 +106,20 @@ OpenAPI documentation is available via `/v3/api-docs/`
 
 The JSON-LD response contains:
 
-- A named graph with the consolidated representation of all delta messages. i.e. the result of applying all instert and
+- A named graph with the consolidated representation of all delta messages. i.e. the result of applying all inserted and
   delete messages.
-- The default graph contains a timestamp to be used in subsequent requests to the `/changes` route. e.g.
+- The default graph contains a timestamp to be used in subsequent requests
 
 ```json
    ...
 ],
 "@id": "http://mu.semte.ch/graphs/kalliope/consolidated",
 "date": "2021-05-27T09:26:03.351256816Z",
-"@context": {
-"date": {
-"@id": "http://purl.org/dc/terms/date",
-"@type": "http://www.w3.org/2001/XMLSchema#dateTime"
-}
-}
+  "@context": {
+    "date": {
+      "@id": "http://purl.org/dc/terms/date",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }
+  }
 }
 ```
-
-### `/changes`
-
-Use the date from a previous `/consolidated` or `/changes` response as `since` parameter.
-
-The response contains:
-
-- Two named graphs with respectively the deleted and inserted triples since the provided date.
-- The default graph contains a timestamp to be used in subsequent requests. Same as for the `/changes` response.
-

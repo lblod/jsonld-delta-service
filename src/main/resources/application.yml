@@ -10,6 +10,7 @@ sparql:
   defaultBatchSize: ${BATCH_SIZE:100}
   defaultLimitSize: ${LIMIT_SIZE:10000}
   maxRetry: ${MAX_RETRY:5}
+  authSudo: ${MU_AUTH_SUDO:true}
 
 spring:
   config:
