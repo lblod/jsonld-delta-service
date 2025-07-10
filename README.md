@@ -106,3 +106,15 @@ The JSON-LD response contains:
   }
 }
 ```
+
+## Authentication
+The service uses **Basic Authentication** combined with **IP whitelisting** to verify whether a client is allowed access.  
+
+Clients are expected to include the following HTTP header in their requests:
+```
+Authorization: Basic <base64(username:password)>
+```
+As with any [semantic.works](https://semantic.works) application, communication takes place over HTTPS (SSL/TLS), and strong passwords should be used.
+
+The authentication flow is illustrated in the diagram below.
+![Authentication flow](docs/diagram-jsonld-delta-service.svg)
