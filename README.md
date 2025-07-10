@@ -106,3 +106,6 @@ The JSON-LD response contains:
   }
 }
 ```
+
+## Security mechanisms
+![Authentication flow](docs/diagram-jsonld-delta-service.svg)
